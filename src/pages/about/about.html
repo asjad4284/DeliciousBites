@@ -139,6 +139,111 @@
             gap: 35px;
         }
 
+        .team-member {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            border: 4px solid #ea5a4c;
+        }
+
+        .team-member h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .team-member .role {
+            color: #ea5a4c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .team-member p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .values-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .values-section h2 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .values-section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #ea5a4c;
+            margin: 12px auto 40px;
+            border-radius: 2px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .value-card h3 {
+            color: #ea5a4c;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
 
       
 
@@ -205,6 +310,9 @@
                     <li>
                         <a href="../login/login.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Login</a>
                     </li>
+                    <li>
+                        <a href="../signup/signup.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Sign Up</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -221,6 +329,62 @@
             <p>Delicious Bites was born from a simple dream: to create a place where people could gather, connect, and enjoy exceptional food in a warm and welcoming atmosphere. Founded in 2010 by passionate food enthusiasts, our restaurant has grown from a small neighborhood eatery to a beloved dining destination.</p>
             <p>We believe that great food has the power to bring people together and create lasting memories. Every dish we serve is crafted with care, using only the freshest ingredients sourced from local farmers and trusted suppliers. Our commitment to quality and authenticity shines through in every bite.</p>
             <p>Over the years, we've stayed true to our core values while continuously evolving our menu to delight our guests with both classic favorites and innovative creations. Our talented team works tirelessly to ensure that every visit to Delicious Bites is a memorable experience.</p>
+        </div>
+
+        <div class="values-section">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🌟</div>
+                    <h3>Quality First</h3>
+                    <p>We never compromise on the quality of our ingredients or service. Excellence is our standard.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">❤️</div>
+                    <h3>Passion</h3>
+                    <p>Our love for food drives everything we do, from recipe creation to plate presentation.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Community</h3>
+                    <p>We believe in building strong relationships with our customers and local suppliers.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">♻️</div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to environmentally responsible practices in everything we do.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=John+Smith&size=120&background=ea5a4c&color=fff" alt="John Smith">
+                    <h3>John Smith</h3>
+                    <p class="role">Head Chef</p>
+                    <p>With 15 years of culinary experience, John leads our kitchen with creativity and precision.</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&size=120&background=ea5a4c&color=fff" alt="Sarah Johnson">
+                    <h3>Sarah Johnson</h3>
+                    <p class="role">Restaurant Manager</p>
+                    <p>Sarah ensures every guest has an exceptional dining experience from start to finish.</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=Mike+Chen&size=120&background=ea5a4c&color=fff" alt="Mike Chen">
+                    <h3>Mike Chen</h3>
+                    <p class="role">Sous Chef</p>
+                    <p>Mike brings innovative techniques and a passion for local ingredients to our menu.</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=Emily+Davis&size=120&background=ea5a4c&color=fff" alt="Emily Davis">
+                    <h3>Emily Davis</h3>
+                    <p class="role">Pastry Chef</p>
+                    <p>Emily creates stunning desserts that are as beautiful as they are delicious.</p>
+                </div>
+            </div>
         </div>        
     </div>
 

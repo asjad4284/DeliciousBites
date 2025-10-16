@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Welcome Back</title>
+    <title>Sign Up - Join Us</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <style>
@@ -34,9 +34,9 @@
             z-index: 1000;
         }
 
-        #login {
+        #signup {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             margin-top: 80px;
         }
 
@@ -79,7 +79,7 @@
         }
 
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             position: relative;
         }
 
@@ -126,8 +126,6 @@
             color: #e74c3c;
             font-size: 12px;
             margin-top: 6px;
-            position: absolute;
-            bottom: -20px;
         }
 
         input:invalid:not(:placeholder-shown) {
@@ -163,20 +161,20 @@
             transform: translateY(0);
         }
 
-        .signup-link {
+        .login-link {
             text-align: center;
             margin-top: 20px;
             color: #555;
             font-size: 14px;
         }
 
-        .signup-link a {
+        .login-link a {
             color: #ea5a4c;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .signup-link a:hover {
+        .login-link a:hover {
             text-decoration: underline;
         }
 
@@ -206,30 +204,45 @@
                         <a href="../contact/contact.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Contact</a>
                     </li>
                     <li>
-                        <a href="login.html" class="block py-2 px-3 text-white bg-red-500 rounded md:bg-transparent md:text-red-500 md:p-0" aria-current="page">Login</a>
+                        <a href="../login/login.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Login</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section id="login">
+    <section id="signup">
         <div class="auth-section">
-            <h2>Login</h2>
+            <h2>Sign Up</h2>
             <form>
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" placeholder=" " required>
+                    <span class="error-message">Please enter your full name</span>
+                </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder=" " required>
                     <span class="error-message">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder=" " required>
+                    <span class="error-message">Please enter your phone number</span>
+                </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder=" " required>
                     <span class="error-message">Password is required</span>
                 </div>
-                <button type="submit" class="btn">Login</button>
-                <div class="signup-link">
-                    Don't have an account? <a href="../signup/signup.html">Sign up here</a>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder=" " required>
+                    <span class="error-message">Please confirm your password</span>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <div class="login-link">
+                    Already have an account? <a href="../login/login.html">Login here</a>
                 </div>
             </form>
         </div>
