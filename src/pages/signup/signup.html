@@ -206,6 +206,9 @@
                     <li>
                         <a href="../login/login.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Login</a>
                     </li>
+                    <li>
+                        <a href="signup.html" class="block py-2 px-3 text-white bg-red-500 rounded md:bg-transparent md:text-red-500 md:p-0" aria-current="page">Sign Up</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -214,33 +217,34 @@
     <section id="signup">
         <div class="auth-section">
             <h2>Sign Up</h2>
-            <form>
+            <form aria-labelledby="signup-heading">
+                <h2 id="signup-heading" class="sr-only">Sign Up Form</h2>
                 <div class="form-group">
                     <label for="fullname">Full Name</label>
-                    <input type="text" id="fullname" placeholder=" " required>
-                    <span class="error-message">Please enter your full name</span>
+                    <input type="text" id="fullname" placeholder=" " required aria-required="true" aria-describedby="fullname-error">
+                    <span id="fullname-error" class="error-message" role="alert">Please enter your full name</span>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder=" " required>
-                    <span class="error-message">Please enter a valid email</span>
+                    <input type="email" id="email" placeholder=" " required aria-required="true" aria-describedby="email-error">
+                    <span id="email-error" class="error-message" role="alert">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder=" " required>
-                    <span class="error-message">Please enter your phone number</span>
+                    <input type="tel" id="phone" placeholder=" " required aria-required="true" aria-describedby="phone-error">
+                    <span id="phone-error" class="error-message" role="alert">Please enter your phone number</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder=" " required>
-                    <span class="error-message">Password is required</span>
+                    <input type="password" id="password" placeholder=" " required aria-required="true" aria-describedby="password-error">
+                    <span id="password-error" class="error-message" role="alert">Password is required</span>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" placeholder=" " required>
-                    <span class="error-message">Please confirm your password</span>
+                    <input type="password" id="confirm-password" placeholder=" " required aria-required="true" aria-describedby="confirm-password-error">
+                    <span id="confirm-password-error" class="error-message" role="alert">Please confirm your password</span>
                 </div>
-                <button type="submit" class="btn">Sign Up</button>
+                <button type="submit" class="btn" aria-label="Submit sign up form">Sign Up</button>
                 <div class="login-link">
                     Already have an account? <a href="../login/login.html">Login here</a>
                 </div>

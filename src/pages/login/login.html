@@ -208,6 +208,9 @@
                     <li>
                         <a href="login.html" class="block py-2 px-3 text-white bg-red-500 rounded md:bg-transparent md:text-red-500 md:p-0" aria-current="page">Login</a>
                     </li>
+                    <li>
+                        <a href="../signup/signup.html" class="block py-2 px-3 text-gray-400 rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0">Sign Up</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -216,20 +219,46 @@
     <section id="login">
         <div class="auth-section">
             <h2>Login</h2>
-            <form>
+            <form aria-labelledby="login-heading">
+                <h2 id="login-heading" class="sr-only">Login Form</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder=" " required>
-                    <span class="error-message">Please enter a valid email</span>
+                    <input type="email" id="email" placeholder=" " required aria-required="true" aria-describedby="email-error">
+                    <span id="email-error" class="error-message" role="alert">Please enter a valid email</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder=" " required>
-                    <span class="error-message">Password is required</span>
+                    <input type="password" id="password" placeholder=" " required aria-required="true" aria-describedby="password-error">
+                    <span id="password-error" class="error-message" role="alert">Password is required</span>
                 </div>
-                <button type="submit" class="btn">Login</button>
+                <button type="submit" class="btn" aria-label="Submit login form">Login</button>
                 <div class="signup-link">
                     Don't have an account? <a href="../signup/signup.html">Sign up here</a>
+                </div>
+                
+                <!-- Dropdown Component -->
+                <div class="mt-6 text-center">
+                    <button id="dropdownHelpButton" data-dropdown-toggle="dropdownHelp" class="text-gray-600 hover:text-gray-800 font-medium rounded-lg text-sm inline-flex items-center" type="button">
+                        Need help? 
+                        <svg class="w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownHelp" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHelpButton">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Forgot Password</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Contact Support</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Login Help</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </form>
         </div>
