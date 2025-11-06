@@ -1,0 +1,217 @@
+/* Centralized theme overrides for dark mode
+   This file targets elements when the root <html> has class="dark".
+   Use specific selectors and some !important rules to override inline styles
+   and ensure a consistent dark UI across all pages. */
+
+:root {
+  --db-dark-bg: #071126;
+  --db-dark-surface: rgba(2,6,23,0.85);
+  --db-dark-muted: #94a3b8;
+  --db-accent: #ea5a4c;
+  --db-positive: #9ae6b4;
+}
+
+/* Apply when html has .dark */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body,
+.dark html {
+  background-color: var(--db-dark-bg) !important;
+  color: #e6eef8 !important;
+}
+
+.dark nav,
+.dark header nav,
+.dark .navbar,
+.dark .nav {
+  background-color: #0f1724 !important;
+  color: #e6eef8 !important;
+}
+
+.dark .py-16,
+.dark .hero,
+.dark .hero-section {
+  background: linear-gradient(135deg, #08101a 0%, #0f1724 100%) !important;
+  color: #e6eef8 !important;
+}
+
+.dark .container,
+.dark main,
+.dark article,
+.dark section {
+  background: transparent !important;
+  color: #e6eef8 !important;
+}
+
+.dark .auth-section,
+.dark .story-section,
+.dark .values-section,
+.dark .team-section,
+.dark .info-card,
+.dark .map-container,
+.dark .menu-item {
+  background-color: var(--db-dark-surface) !important;
+  color: #e6eef8 !important;
+  box-shadow: none !important;
+  border-color: rgba(255,255,255,0.03) !important;
+}
+
+.dark .menu-item img,
+.dark .story-section img,
+.dark .team-member img {
+  filter: brightness(0.95) contrast(0.95) saturate(0.9) !important;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5 {
+  color: #ffffff !important;
+}
+
+.dark a,
+.dark a:hover,
+.dark .btn,
+.dark .btn:hover,
+.dark .btn-delete,
+.dark .btn-edit {
+  color: inherit !important;
+}
+
+.dark .price {
+  color: var(--db-positive) !important;
+}
+
+.dark footer,
+.dark .site-footer {
+  background-color: #071226 !important;
+  color: var(--db-dark-muted) !important;
+}
+
+/* Buttons & controls */
+.dark .btn {
+  background-color: #0b1220 !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  color: #e6eef8 !important;
+}
+
+.dark .btn-primary,
+.dark .btn-accent {
+  background-color: var(--db-accent) !important;
+  color: #071226 !important;
+}
+
+/* Ensure our specialized button classes look correct in dark mode */
+.dark .btn-primary {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: #e6eef8 !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.dark .btn-secondary {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: #e6eef8 !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.dark .btn-accent {
+  /* keep accent bright but ensure readable */
+  background-color: var(--db-accent) !important;
+  color: #071226 !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+}
+
+/* Inputs, selects and textareas: dark backgrounds with readable text */
+.dark input,
+.dark textarea,
+.dark select,
+.dark .form-group input,
+.dark .form-group textarea,
+.dark .form-group select {
+  background-color: rgba(255,255,255,0.03) !important;
+  color: #e6eef8 !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(230,238,248,0.55) !important;
+}
+
+/* Make sure form labels are visible */
+.dark label,
+.dark .form-group label {
+  color: #9fb0c8 !important;
+}
+
+/* Specific fix: buttons implemented as anchors sometimes carry no .btn class */
+.dark a.btn-primary,
+.dark a.btn-secondary,
+.dark a.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tabs and table headers */
+.dark thead th,
+.dark .tab-active,
+.dark .tab-selected {
+  background-color: #0b1220 !important;
+  color: #fff !important;
+}
+
+/* Reduce high contrast for shadows that look harsh in dark mode */
+.dark .menu-item,
+.dark .auth-section {
+  box-shadow: 0 1px 6px rgba(0,0,0,0.45) !important;
+}
+
+/* Small utility for inverting overly-bright inline backgrounds */
+.dark [style*="background-color:"] {
+  background-color: transparent !important;
+}
+
+/* Keep images crisp but slightly dimmer */
+.dark img { mix-blend-mode: normal; }
+
+/* Ensure modal/backdrop look good */
+.dark .modal, .dark .modal-content {
+  background-color: var(--db-dark-surface) !important;
+  color: #e6eef8 !important;
+}
+
+/* Ensure Flowbite components with white bg are toned down */
+.dark .bg-white { background-color: var(--db-dark-surface) !important; }
+
+/* Strong overrides for elements that use inline gradients or inline background-color styles */
+.dark [style*="linear-gradient"] {
+  /* Replace any inline light gradients with a dark gradient */
+  background: linear-gradient(135deg, #08101a 0%, #0f1724 100%) !important;
+  color: #e6eef8 !important;
+}
+
+.dark [style*="background-color:"] {
+  /* Tone down inline background-color values to the dark surface */
+  background-color: var(--db-dark-surface) !important;
+  color: #e6eef8 !important;
+}
+
+/* Table headers often used inline styles for red header; make them readable in dark mode */
+.dark thead th, .dark th[style*="background-color"] {
+  background-color: rgba(234,90,76,0.12) !important; /* subtle red tint */
+  color: #ffdcd1 !important;
+  border-color: rgba(255,255,255,0.03) !important;
+}
+
+/* Make the theme toggle visually distinct in dark mode */
+.dark #themeToggle {
+  background-color: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  color: #ffd166 !important;
+}
+
+/* Improve contrast for flowbite white cards */
+.dark .rounded-lg.bg-white {
+  background-color: var(--db-dark-surface) !important;
+}
+

@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delicious Bites Restaurant</title>
+    <!-- Title logo / favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+    <!-- PNG fallback (small data URL) -->
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/css/theme.css">
+    <script type="module" src="./src/pages/home/home.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -92,7 +100,7 @@
             font-weight: 500;
         }
 
-        .form-group input {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #ddd;
@@ -100,9 +108,52 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
             border-color: #e74c3c;
+        }
+
+        .modal {
+            z-index: 1000;
+        }
+
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .card-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit, .btn-delete {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
         }
 
         .error-message {
@@ -251,14 +302,65 @@
             td:nth-of-type(1):before { content: "Day"; }
             td:nth-of-type(2):before { content: "Hours"; }
         }
+
+        /* Reusable classes to replace inline styles for maintainability */
+        .hero { background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%); }
+        .btn-primary { background-color: #1f2937; color: #ffffff; }
+        .btn-secondary { background-color: #ffffff; color: #1f2937; border-color: #ffffff; }
+        .btn-accent { background-color: #f59e0b; color: #111827; border-color: #f59e0b; }
+
+        /* Wider auth section used on the menu area */
+        #menu .auth-section { max-width: 800px; margin: 1.25rem auto 0; }
+
+        /* Table header / cell classes to replace inline table styles */
+        .table-header { background-color: #e74c3c; color: white; padding: 10px; text-align: center; border: 1px solid #ddd; }
+        .table-cell { padding: 10px; text-align: center; border: 1px solid #ddd; }
+        /* Dark mode overrides (activated when <html> has class="dark") */
+        .dark body {
+            background-color: #0b1220 !important;
+            color: #e6eef8 !important;
+        }
+
+        .dark nav, .dark header nav {
+            background-color: #0f1724 !important;
+        }
+
+        .dark .py-16 {
+            background: linear-gradient(135deg, #0b1220 0%, #0f172a 100%) !important;
+        }
+
+        .dark .auth-section,
+        .dark .story-section,
+        .dark .values-section,
+        .dark .team-section,
+        .dark .info-card,
+        .dark .map-container {
+            background-color: rgba(2,6,23,0.85) !important;
+            color: #e6eef8 !important;
+            box-shadow: none !important;
+        }
+
+        .dark .menu-item {
+            background-color: #071026 !important;
+            box-shadow: none !important;
+            border: 1px solid rgba(255,255,255,0.03) !important;
+            color: #e6eef8 !important;
+        }
+
+        .dark .price { color: #9ae6b4 !important; }
+
+        .dark footer { background-color: #071226 !important; color: #94a3b8 !important; }
     </style>
 </head>
 <body>
+    <header>
     <nav class="bg-gray-800 border-gray-700">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap text-red-500">Delicious Bites</span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-red-500" id="appName"></span>
             </a>
+            <!-- Dark/Light mode toggle -->
+            <button id="themeToggle" aria-label="Toggle dark mode" class="ml-4 p-2 rounded bg-gray-700 text-white hover:bg-gray-600">🌙</button>
             <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -286,21 +388,22 @@
             </div>
         </div>
     </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section class="py-16" style="background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);">
+    <section class="py-16 hero">
         <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl drop-shadow-lg" style="color: #ffffff;">Welcome to Delicious Bites</h1>
             <p class="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 drop-shadow-md" style="color: #ffffff;">Experience culinary excellence with our carefully crafted dishes. From traditional favorites to innovative creations, every meal is a celebration of flavors.</p>
             <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                <a href="#menu" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg transition-all" style="background-color: #1f2937; color: #ffffff;">
+                    <a href="#menu" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg transition-all btn-primary">
                     View Menu
                     <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 </a>
-                <a href="./src/pages/contact/contact.html" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border-2 transition-all" style="background-color: #ffffff; color: #1f2937; border-color: #ffffff;">
+                <a href="./src/pages/contact/contact.html" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border-2 transition-all btn-secondary">
                     Contact Us
                 </a>
-                <button data-modal-target="announcementModal" data-modal-toggle="announcementModal" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border-2 transition-all bg-yellow-400 hover:bg-yellow-500 text-gray-800 border-yellow-500">
+                <button data-modal-target="announcementModal" data-modal-toggle="announcementModal" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg border-2 transition-all btn-accent">
                     Special Event
                     <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd"></path></svg>
                 </button>
@@ -344,39 +447,73 @@
     </div>
 
     <!-- Main Container -->
-    <div class="container">
-        <!-- Opening Hours Table with Inline CSS -->
-        <section id="home">
+    <main class="container">
+    <!-- Opening Hours Table with Inline CSS -->
+    <article id="home">
             <h2>Opening Hours</h2>
             <div class="table-responsive">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr>
-                            <th style="background-color: #e74c3c; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;">Day</th>
-                            <th style="background-color: #e74c3c; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;">Hours</th>
+                        <th class="table-header">Day</th>
+                        <th class="table-header">Hours</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">Monday - Friday</td>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">11:00 AM - 10:00 PM</td>
+                            <td class="table-cell">Monday - Friday</td>
+                            <td class="table-cell">11:00 AM - 10:00 PM</td>
                         </tr>
                         <tr>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">Saturday - Sunday</td>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">10:00 AM - 11:00 PM</td>
+                            <td class="table-cell">Saturday - Sunday</td>
+                            <td class="table-cell">10:00 AM - 11:00 PM</td>
                         </tr>
                         <tr>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">Holidays</td>
-                            <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">12:00 PM - 9:00 PM</td>
+                            <td class="table-cell">Holidays</td>
+                            <td class="table-cell">12:00 PM - 9:00 PM</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- Menu Section with Tabs -->
-        <section id="menu" style="margin-top: 3rem;">
+    <!-- Menu Section with Tabs -->
+    <article id="menu" style="margin-top: 3rem;">
             <h2>Our Menu</h2>
+            <!-- Add New Recipe Form (Step 3) -->
+            <div class="auth-section">
+                <h3 class="text-xl font-semibold mb-3">Add New Menu Item</h3>
+                <form id="addRecipeForm" class="space-y-3" aria-label="Add new recipe form">
+                    <div class="form-group">
+                        <label for="item-name">Name</label>
+                        <input id="item-name" name="name" type="text" required placeholder="e.g., Garlic Bread">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-desc">Description</label>
+                        <input id="item-desc" name="description" type="text" required placeholder="Short description">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-price">Price</label>
+                        <input id="item-price" name="price" type="number" step="0.01" required placeholder="9.99">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <select id="item-category" name="category" required>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="desserts">Desserts</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-image">Image URL (optional)</label>
+                        <input id="item-image" name="image" type="url" placeholder="./assets/images/example.jpg">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn">Add Item</button>
+                    </div>
+                </form>
+            </div>
             
             <!-- Tabs Component -->
             <div class="mb-6 border-b border-gray-200">
@@ -497,7 +634,7 @@
         </section>
 
         <!-- Blog section has been removed -->
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-800">
@@ -563,9 +700,16 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <!-- Theme utils (dark/light) -->
+    <script type="module">
+        // Import and initialize theme utilities so the toggle button is wired.
+        import { initTheme } from './utils/themeUtils.js';
+        initTheme();
+    </script>
+    <!-- Edit functionality removed per user request -->
     <script>
         // Set the breakfast tab as active by default when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             // Get the breakfast tab button and trigger a click
             const breakfastTab = document.getElementById('breakfast-tab');
             if (breakfastTab) {
@@ -575,7 +719,7 @@
             // Add event listener for Make Reservation button in modal
             const reservationButtons = document.querySelectorAll('a.bg-red-500');
             reservationButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', (e) => {
                     // Close the modal when reservation button is clicked
                     const modal = document.getElementById('announcementModal');
                     if (modal && typeof window.hideModal === 'function') {
