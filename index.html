@@ -393,8 +393,8 @@
     <!-- Hero Section -->
     <section class="py-16 hero">
         <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl drop-shadow-lg" style="color: #ffffff;">Welcome to Delicious Bites</h1>
-            <p class="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 drop-shadow-md" style="color: #ffffff;">Experience culinary excellence with our carefully crafted dishes. From traditional favorites to innovative creations, every meal is a celebration of flavors.</p>
+            <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl lg:text-6xl drop-shadow-lg">Welcome to Delicious Bites</h1>
+            <p class="mb-8 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 drop-shadow-md">Experience culinary excellence with our carefully crafted dishes. From traditional favorites to innovative creations, every meal is a celebration of flavors.</p>
             <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <a href="#menu" class="w-full sm:w-auto inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center rounded-lg transition-all btn-primary">
                     View Menu
@@ -452,7 +452,7 @@
     <article id="home">
             <h2>Opening Hours</h2>
             <div class="table-responsive">
-                <table style="width: 100%; border-collapse: collapse;">
+                <table>
                     <thead>
                         <tr>
                         <th class="table-header">Day</th>
@@ -478,8 +478,22 @@
         </section>
 
     <!-- Menu Section with Tabs -->
-    <article id="menu" style="margin-top: 3rem;">
+    <article id="menu">
             <h2>Our Menu</h2>
+            <!-- Search and filters (reduced wrappers) -->
+            <div id="searchFilters" class="mt-4 mb-6 flex flex-wrap gap-3 items-center">
+                <input id="searchInput" class="search-input" type="search" placeholder="Search by name or description" />
+                <select id="filterCategory" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="desserts">Desserts</option>
+                </select>
+                <input id="filterMinPrice" class="price-input" type="number" min="0" step="0.01" placeholder="Min price" />
+                <input id="filterMaxPrice" class="price-input" type="number" min="0" step="0.01" placeholder="Max price" />
+                <button id="clearFilters" type="button" class="btn-secondary btn-small">Clear</button>
+            </div>
             <!-- Add New Recipe Form (Step 3) -->
             <div class="auth-section">
                 <h3 class="text-xl font-semibold mb-3">Add New Menu Item</h3>
@@ -507,12 +521,53 @@
                     </div>
                     <div class="form-group">
                         <label for="item-image">Image URL (optional)</label>
-                        <input id="item-image" name="image" type="url" placeholder="./assets/images/example.jpg">
+                        <input id="item-image" name="image" type="text" placeholder="./assets/images/example.jpg">
                     </div>
                     <div>
                         <button type="submit" class="btn">Add Item</button>
                     </div>
                 </form>
+            </div>
+            <!-- Edit Recipe Modal -->
+            <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+                <div class="absolute inset-0 bg-black opacity-50 z-0"></div>
+                <div class="bg-white rounded-lg p-6 z-10 w-full max-w-md modal-content">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Edit Menu Item</h3>
+                        <button id="closeEditModal" type="button" class="text-gray-600" aria-label="Close edit modal">✕</button>
+                    </div>
+                    <form id="editRecipeForm" class="space-y-3" aria-label="Edit recipe form">
+                        <input type="hidden" name="id" id="edit-id">
+                        <div class="form-group">
+                            <label for="edit-name">Name</label>
+                            <input id="edit-name" name="name" type="text" required placeholder="e.g., Garlic Bread">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-description">Description</label>
+                            <input id="edit-description" name="description" type="text" required placeholder="Short description">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-price">Price</label>
+                            <input id="edit-price" name="price" type="number" step="0.01" required placeholder="9.99">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-category">Category</label>
+                            <select id="edit-category" name="category" required>
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="desserts">Desserts</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-image">Image URL (optional)</label>
+                            <input id="edit-image" name="image" type="text" placeholder="./assets/images/example.jpg">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             
             <!-- Tabs Component -->

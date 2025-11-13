@@ -215,3 +215,22 @@
   background-color: var(--db-dark-surface) !important;
 }
 
+/* Project-specific presentation classes (moved from inline styles) */
+.hero h1 { color: #ffffff; }
+.hero p { color: #ffffff; }
+
+.table-responsive table { width: 100%; border-collapse: collapse; }
+
+#menu { margin-top: 3rem; }
+
+.search-input { flex: 1; min-width: 220px; padding: 0.6rem; border-radius: 6px; border: 1px solid #ddd; }
+.filter-select { padding: 0.6rem; border-radius: 6px; border: 1px solid #ddd; }
+.price-input { width: 110px; padding: 0.5rem; border-radius: 6px; border: 1px solid #ddd; }
+.btn-small { padding: 0.5rem 0.9rem; }
+
+@media (max-width: 640px) {
+  /* Stack search controls on small screens for better UX */
+  #searchFilters { flex-direction: column; align-items: stretch; }
+  .price-input { width: 100%; }
+}
+

@@ -42,6 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (breakfastTab) breakfastTab.click();
 	else if (tabButtons.length) tabButtons[0].click();
 
+	// Load persisted recipes from localStorage if available (keep the imported array reference)
+	try {
+		const stored = localStorage.getItem('recipesData');
+		if (stored) {
+			const parsed = JSON.parse(stored);
+			if (Array.isArray(parsed) && parsed.length) {
+				recipes.splice(0, recipes.length, ...parsed);
+			}
+		}
+	} catch (e) {
+		// ignore parse errors
+	}
+
 			// Render menu from recipes array into the tab panels (uses Array.map)
 			const renderMenuFromData = (items) => {
 				const categories = ['breakfast', 'lunch', 'dinner', 'desserts'];
@@ -81,12 +94,21 @@ document.addEventListener('DOMContentLoaded', () => {
 													const actions = document.createElement('div');
 													actions.className = 'card-actions';
 
+													// Edit button
+													const editBtn = document.createElement('button');
+													editBtn.type = 'button';
+													editBtn.className = 'btn-edit';
+													editBtn.textContent = 'Edit';
+													editBtn.dataset.id = item.id;
+
+													// Delete button
 													const deleteBtn = document.createElement('button');
 													deleteBtn.type = 'button';
 													deleteBtn.className = 'btn-delete';
 													deleteBtn.textContent = 'Delete';
 													deleteBtn.dataset.id = item.id;
 
+													actions.appendChild(editBtn);
 													actions.appendChild(deleteBtn);
 
 													card.appendChild(h3);
@@ -95,13 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
 													card.appendChild(price);
 													card.appendChild(actions);
 
+													// edit handler (open modal)
+													editBtn.addEventListener('click', () => {
+														window.openEditModal && window.openEditModal(item);
+													});
+
 													// delete handler
 													deleteBtn.addEventListener('click', () => {
 														const id = Number(deleteBtn.dataset.id);
 														const idx = recipes.findIndex(r => Number(r.id) === id);
 														if (idx > -1) {
 															recipes.splice(idx, 1);
-															renderMenuFromData(recipes);
+															try { localStorage.setItem('recipesData', JSON.stringify(recipes)); } catch(e){}
+															refresh();
 														}
 													});
 
@@ -117,13 +145,118 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 			}
 
-		// call render
-		try {
-			renderMenuFromData(recipes);
-		} catch (e) {
-			// if import fails or recipes isn't available, do nothing
-			// console.warn('Could not render menu from data', e);
-		}
+			// Search & filter state and helpers
+			const searchInput = document.getElementById('searchInput');
+			const filterCategory = document.getElementById('filterCategory');
+			const filterMinPrice = document.getElementById('filterMinPrice');
+			const filterMaxPrice = document.getElementById('filterMaxPrice');
+			const clearFiltersBtn = document.getElementById('clearFilters');
+
+			const getFilteredRecipes = () => {
+				let list = Array.isArray(recipes) ? recipes.slice() : [];
+				const q = (searchInput && (searchInput.value || '')).toString().trim().toLowerCase();
+				const cat = (filterCategory && filterCategory.value) || 'all';
+				const min = filterMinPrice && filterMinPrice.value ? parseFloat(filterMinPrice.value) : null;
+				const max = filterMaxPrice && filterMaxPrice.value ? parseFloat(filterMaxPrice.value) : null;
+
+				if (q) {
+					list = list.filter(r => {
+						return (r.name || '').toString().toLowerCase().includes(q) || (r.description || '').toString().toLowerCase().includes(q);
+					});
+				}
+				if (cat && cat !== 'all') {
+					list = list.filter(r => r.category === cat);
+				}
+				if (min != null) {
+					list = list.filter(r => Number(r.price) >= min);
+				}
+				if (max != null) {
+					list = list.filter(r => Number(r.price) <= max);
+				}
+				return list;
+			};
+
+			const refresh = () => {
+				try {
+					renderMenuFromData(getFilteredRecipes());
+				} catch (e) {
+					// ignore
+				}
+			};
+
+			// initial render using filters (empty by default)
+			refresh();
+
+			// wire search/filter inputs
+			if (searchInput) searchInput.addEventListener('input', refresh);
+			if (filterCategory) filterCategory.addEventListener('change', refresh);
+			if (filterMinPrice) filterMinPrice.addEventListener('input', refresh);
+			if (filterMaxPrice) filterMaxPrice.addEventListener('input', refresh);
+			if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', () => {
+				if (searchInput) searchInput.value = '';
+				if (filterCategory) filterCategory.value = 'all';
+				if (filterMinPrice) filterMinPrice.value = '';
+				if (filterMaxPrice) filterMaxPrice.value = '';
+				refresh();
+			});
+
+			// ------ Edit modal helpers and handlers ------
+			const editModal = document.getElementById('editModal');
+			const editForm = document.getElementById('editRecipeForm');
+			const closeEditBtn = document.getElementById('closeEditModal');
+
+			window.openEditModal = (item) => {
+				if (!editModal) return;
+				document.getElementById('edit-id').value = item.id || '';
+				document.getElementById('edit-name').value = item.name || '';
+				document.getElementById('edit-description').value = item.description || '';
+				document.getElementById('edit-price').value = item.price || '';
+				document.getElementById('edit-category').value = item.category || 'breakfast';
+				document.getElementById('edit-image').value = item.image || '';
+				editModal.classList.remove('hidden');
+				const first = document.getElementById('edit-name');
+				if (first) first.focus();
+			};
+
+			const closeEditModal = () => {
+				if (!editModal) return;
+				editModal.classList.add('hidden');
+			};
+
+			if (closeEditBtn) closeEditBtn.addEventListener('click', closeEditModal);
+			if (editModal) {
+				editModal.addEventListener('click', (ev) => {
+					if (ev.target === editModal) closeEditModal();
+				});
+			}
+
+			if (editForm) {
+				editForm.addEventListener('submit', (ev) => {
+					ev.preventDefault();
+					const formData = new FormData(editForm);
+					const id = Number(formData.get('id'));
+					const name = (formData.get('name') || '').toString().trim();
+					const description = (formData.get('description') || '').toString().trim();
+					const price = parseFloat(formData.get('price')) || 0;
+					const category = (formData.get('category') || '').toString().trim();
+					const image = (formData.get('image') || '').toString().trim();
+
+					const idx = recipes.findIndex(r => Number(r.id) === id);
+					if (idx > -1) {
+						// mutate existing object so references remain consistent
+						Object.assign(recipes[idx], {
+							name,
+							description,
+							price: Number(price),
+							category,
+							image: image || './assets/images/pancakes.jpg'
+						});
+						try { localStorage.setItem('recipesData', JSON.stringify(recipes)); } catch(e){}
+						refresh();
+						closeEditModal();
+					}
+				});
+			}
 
 			// Handle add recipe form submission (Step 3)
 			const addForm = document.getElementById('addRecipeForm');
@@ -157,8 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
 					// mutate exported array
 					recipes.push(newObj);
 
-					// re-render menu
-					renderMenuFromData(recipes);
+					// persist and re-render with current filters
+					try { localStorage.setItem('recipesData', JSON.stringify(recipes)); } catch(e){}
+					refresh();
 
 					// reset form
 					addForm.reset();
